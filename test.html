@@ -123,11 +123,20 @@
         // Инициализация Telegram WebApp
         const tg = window.Telegram.WebApp;
         
-        // Настройка темы
+        // РАСШИРЯЕМ окно (обязательно!)
         tg.expand();
-        tg.setHeaderColor('#667eea');
-        tg.setBackgroundColor('#ffffff');
         
+        // Добавляем обработчики событий для отладки
+        tg.onEvent('web_app_data_send', (data) => {
+            console.log('✅ Данные успешно отправлены в Telegram!');
+            console.log('Отправленные данные:', data);
+        });
+        
+        tg.onEvent('web_app_data_send_failed', (error) => {
+            console.error('❌ Ошибка отправки данных:', error);
+            tg.showAlert('Не удалось отправить данные. Попробуйте снова!');
+        });
+
         // Получаем элементы
         const textInput = document.getElementById('textInput');
         const sendBtn = document.getElementById('sendBtn');
