@@ -2,60 +2,12 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        #debug { 
-            position: fixed; 
-            top: 10px; 
-            right: 10px; 
-            background: red; 
-            color: white; 
-            padding: 5px 10px; 
-            font-size: 12px; 
-            z-index: 9999;
-        }
-    </style>
 </head>
 <body>
-    <div id="debug">Загрузка...</div>
-    
-    <!-- Ваша форма или кнопка -->
-    <button id="send" style="font-size:20px;padding:15px;">✅ Отправить</button>
-
     <script>
-        // Проверяем доступность Telegram.WebApp
-        const debug = document.getElementById('debug');
-        
-        if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
-            debug.textContent = '✅ Готов к отправке';
-            debug.style.background = 'green';
-        } else {
-            debug.textContent = '❌ WebApp недоступен';
-            debug.style.background = 'red';
-        }
-
-        document.getElementById('send').onclick = () => {
-            debug.textContent = '📤 Отправляю...';
-            debug.style.background = 'orange';
-
-            if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
-                try {
-                    const testData = { test: "ok", timestamp: Date.now() };
-                    Telegram.WebApp.sendData(JSON.stringify(testData));
-                    debug.textContent = '✅ Отправлено!';
-                    debug.style.background = 'green';
-                    // Не закрываем сразу — даём увидеть статус
-                    setTimeout(() => Telegram.WebApp.close(), 1000);
-                } catch (e) {
-                    debug.textContent = '💥 Ошибка: ' + e.message;
-                    debug.style.background = 'red';
-                }
-            } else {
-                debug.textContent = '❌ WebApp не найден';
-                debug.style.background = 'red';
-            }
-        };
+        Telegram.WebApp.sendData(JSON.stringify({ping: "pong"}));
+        Telegram.WebApp.close();
     </script>
 </body>
 </html>
