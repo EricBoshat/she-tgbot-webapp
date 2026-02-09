@@ -1,236 +1,88 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Бронирование Sherwood Lounge</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f5f5;
-            padding: 20px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .container {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 24px;
-            font-size: 24px;
-            font-weight: 600;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #2c3e50;
-            font-size: 14px;
-        }
-        
-        label.required::after {
-            content: " *";
-            color: #e74c3c;
-        }
-        
-        input, textarea, select {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            font-size: 16px;
-            background: #fafafa;
-            transition: border-color 0.2s;
-        }
-        
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: #3498db;
-            background: white;
-        }
-        
-        input[type="number"] {
-            -moz-appearance: textfield;
-        }
-        
-        input[type="number"]::-webkit-outer-spin-button,
-        input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        
-        .time-row {
-            display: flex;
-            gap: 12px;
-        }
-        
-        .time-row .form-group {
-            flex: 1;
-            margin-bottom: 0;
-        }
-        
-        button {
-            background: #9b59b6; /* Фиолетовый для Sherwood */
-            color: white;
-            padding: 14px 20px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            transition: background 0.2s;
-        }
-        
-        button:hover {
-            background: #8e44ad;
-        }
-        
-        button:active {
-            transform: scale(0.98);
-        }
-        
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            color: #7f8c8d;
-            font-size: 12px;
-        }
-        
-        /* Адаптивность */
-        @media (max-width: 480px) {
-            .container {
-                border-radius: 0;
-                padding: 16px;
-            }
-            
-            h1 {
-                font-size: 20px;
-            }
-            
-            input, textarea, button {
-                font-size: 16px; /* Предотвращает zoom на iOS */
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тест</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      padding: 40px;
+      width: 100%;
+      max-width: 500px;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 30px;
+      text-align: center;
+      font-size: 28px;
+    }
+    input {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    button {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Забронировать столик</h1>
-        <form id="bookingForm">
-            <div class="form-group">
-                <label class="required">Как я могу к Вам обращаться?</label>
-                <input type="text" id="name" required maxlength="50">
-            </div>
-            
-            <div class="form-group">
-                <label class="required">Контактный номер</label>
-                <input type="tel" id="phone" required placeholder="+7 (999) 123-45-67">
-            </div>
-            
-            <div class="form-group">
-                <label class="required">Сколько гостей?</label>
-                <input type="number" id="guests" min="1" max="20" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="required">Дата бронирования</label>
-                <input type="date" id="date" required>
-            </div>
-            
-            <div class="time-row">
-                <div class="form-group">
-                    <label class="required">Время начала</label>
-                    <input type="time" id="timeFrom" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="required">Время окончания</label>
-                    <input type="time" id="timeTo" required>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label>Особый повод (необязательно)</label>
-                <textarea id="comment" rows="3" maxlength="200" placeholder="День рождения, юбилей, романтический ужин..."></textarea>
-            </div>
-            
-            <button type="submit">Отправить бронирование</button>
-        </form>
-        
-        <div class="footer">
-            Sherwood Lounge Bar • 18+
-        </div>
-    </div>
+  <div class="container">
+    <h1>📝 Тестовая форма</h1>
+    <input type="text" id="text" placeholder="Введите любое слово..." autocomplete="off">
+    <button onclick="send()">Отправить в бот</button>
+  </div>
 
-    <script>
-        // Устанавливаем минимальную дату — сегодня
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('date').min = today;
-        
-        // Устанавливаем минимальное время — текущее (если сегодня)
-        document.getElementById('date').addEventListener('change', function() {
-            const selectedDate = this.value;
-            const now = new Date();
-            const todayStr = now.toISOString().split('T')[0];
-            
-            const timeFrom = document.getElementById('timeFrom');
-            if (selectedDate === todayStr) {
-                const currentHour = now.getHours().toString().padStart(2, '0');
-                const currentMinute = now.getMinutes().toString().padStart(2, '0');
-                timeFrom.min = `${currentHour}:${currentMinute}`;
-            } else {
-                timeFrom.min = '';
-            }
-        });
-        
-        const form = document.getElementById('bookingForm');
-        
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            // Валидация времени
-            const timeFrom = document.getElementById('timeFrom').value;
-            const timeTo = document.getElementById('timeTo').value;
-            
-            if (timeFrom >= timeTo) {
-                alert('Время окончания должно быть позже времени начала');
-                return;
-            }
-            
-            const data = {
-                name: document.getElementById('name').value.trim(),
-                phone: document.getElementById('phone').value.trim(),
-                guests: document.getElementById('guests').value,
-                date: document.getElementById('date').value,
-                timeFrom: timeFrom,
-                timeTo: timeTo,
-                comment: document.getElementById('comment').value.trim() || '-'
-            };
-            
-            // Отправляем данные в бота
-            Telegram.WebApp.sendData(JSON.stringify(data));
-            Telegram.WebApp.close();
-        });
-    </script>
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    
+    function send() {
+      const text = document.getElementById('text').value.trim();
+      if (text) {
+        tg.sendData(text);
+      } else {
+        tg.showAlert('Введите текст!');
+      }
+    }
+    
+    document.getElementById('text').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') send();
+    });
+    
+    document.getElementById('text').focus();
+  </script>
 </body>
 </html>
